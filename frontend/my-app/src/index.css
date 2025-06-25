@@ -1,0 +1,262 @@
+/* ─── 1. IMPORT DE FUENTE "HACKER" ───────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+
+/* ─── 2. RESET GLOBAL ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── 3. VARIABLES CSS ──────────────────────────────────────────────────── */
+:root {
+  /* Tipografía genérica */
+  --font-sans: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-mono: 'Source Code Pro', monospace;
+  --line-height: 1.5;
+  --font-weight: 400;
+
+  /* Colores luz/oscuridad */
+  --color-bg-dark: #242424;
+  --color-text-dark: rgba(255, 255, 255, 0.87);
+  --color-bg-light: #ffffff;
+  --color-text-light: #213547;
+
+  /* Primarios */
+  --color-primary: #646cff;
+  --color-primary-hover: #535bf2;
+  --color-border-dark: #333;
+  --color-border-light: #ddd;
+
+  /* Espaciados y contenedor */
+  --spacing: 1rem;
+  --container-max-width: 1200px;
+}
+
+/* ─── 4. ESTILOS BASE ───────────────────────────────────────────────────── */
+html {
+  font-family: var(--font-sans);
+  line-height: var(--line-height);
+  font-weight: var(--font-weight);
+  color-scheme: light dark;
+}
+body {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-dark);
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  min-height: 100vh;
+}
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: var(--color-bg-light);
+    color: var(--color-text-light);
+  }
+}
+
+/* Enlaces */
+a {
+  font-weight: 500;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* Contenedor central (si necesario) */
+.container {
+  max-width: var(--container-max-width);
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--spacing);
+}
+
+/* Encabezados */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing);
+}
+
+/* ─── 5. BOTONES ───────────────────────────────────────────────────────── */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  background-color: #1a1a1a;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+button:hover {
+  border-color: var(--color-primary);
+}
+button:focus {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+@media (prefers-color-scheme: light) {
+  button {
+    background-color: #f9f9f9;
+    color: inherit;
+  }
+}
+
+/* ─── 6. FORMULARIOS ───────────────────────────────────────────────────── */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.75em;
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  background-color: transparent;
+  color: inherit;
+  font-family: var(--font-mono);
+  margin-bottom: 1rem;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* ─── 7. PESTAÑAS (TABS) y TABLAS ───────────────────────────────────────── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border-dark);
+}
+.tab {
+  padding: 0.5em 1em;
+  cursor: pointer;
+  user-select: none;
+}
+.tab.active {
+  border-bottom: 2px solid var(--color-primary);
+  font-weight: 500;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing);
+}
+th,
+td {
+  border: 1px solid var(--color-border-dark);
+  padding: 0.5em;
+  text-align: left;
+}
+th {
+  background-color: var(--color-border-dark);
+  color: var(--color-text-light);
+}
+tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+@media (prefers-color-scheme: light) {
+  th {
+    background-color: var(--color-border-light);
+    color: var(--color-text-light);
+  }
+  tbody tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+}
+
+/* ─── 8. PANEL KPI ──────────────────────────────────────────────────────── */
+.kpi-panel {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 1em;
+  margin-top: var(--spacing);
+}
+@media (prefers-color-scheme: light) {
+  .kpi-panel {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* ─── 9. LAYOUT SENCILLO 25%/75% ───────────────────────────────────────── */
+.page-split {
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 25%;
+  background-color: #1f1f1f; /* Gris muy oscuro */
+  color: #fff;
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+}
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: var(--font-mono);
+}
+.sidebar button.mb-4 {
+  margin-bottom:2.0rem;
+}
+
+/* Espacio extra tras botones de gestión */
+.sidebar .manage-group {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  
+}
+
+/* Ajuste para juntar ID Alumno, Trimestre y Asignatura con menos espacio */
+.sidebar .field-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.sidebar .field-group label {
+  font-family: var(--font-mono);
+  margin-bottom: 0;
+}
+
+.sidebar .field-group input,
+.sidebar .field-group select {
+  flex: 1;
+  padding: 0.75rem;
+}
+
+.sidebar button {
+  color: #000;
+}
+
+/* ─── 10. SPLASH BACKGROUND – FUNDO NEGRO POR DEFECTO ──────────────────── */
+.splash {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: #000;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* ─── 11. CONTENIDO DERECHO ─────────────────────────────────────────────── */
+.content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #000;
+  color: #fff;
+  font-family: var(--font-sans);
+}
+
+.sidebar .fields-container {
+  margin-top: auto;
+}
+
