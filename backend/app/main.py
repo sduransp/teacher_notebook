@@ -20,7 +20,7 @@ app.add_middleware(
 # Mount the students-import router
 app.include_router(
     students_router,
-    prefix="/import",
+    prefix="",
     tags=["students"],
 )
 
