@@ -16,14 +16,15 @@ class StudentDataService:
         # Load existing data or start empty
         self._students: List[Dict] = []
         self._names_set: set[str]  = set()
+        self._next_id    : int       = 1
         self._load_from_disk()
 
     def _load_from_disk(self):
-        """Read JSON file into memory and build name index."""
         if DATA_FILE.exists():
-            data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
-            self._students = data
+            self._students = json.loads(DATA_FILE.read_text(encoding="utf-8"))
             self._names_set = {s["full_name"] for s in self._students}
+            if self._students:
+                self._next_id = max(s["id"] for s in self._students) + 1
 
     def _save_to_disk(self):
         """Persist current list to JSON file."""
@@ -31,6 +32,11 @@ class StudentDataService:
             json.dumps(self._students, ensure_ascii=False, indent=2),
             encoding="utf-8"
         )
+
+    def _generate_id(self) -> int:
+        new_id       = self._next_id
+        self._next_id += 1
+        return new_id
 
     def add_students(self, new_students: List[Dict]) -> List[Dict]:
         """
@@ -43,12 +49,11 @@ class StudentDataService:
             for s in new_students:
                 name = s["full_name"]
                 if name not in self._names_set:
-                    # Assign a unique ID
                     record = {
-                        "id": len(self._students) + 1,
+                        "id"       : self._generate_id(),
                         "full_name": name,
-                        "ciclos": [],   # placeholder
-                        "modulos": []   # placeholder
+                        "ciclos"   : s.get("ciclos", []),
+                        "modulos"  : s.get("modulos", []),
                     }
                     self._students.append(record)
                     self._names_set.add(name)
@@ -60,6 +65,27 @@ class StudentDataService:
     def list_students(self) -> List[Dict]:
         """Get all students."""
         return self._students.copy()
+    
+    def delete_students(self, ids: List[int]) -> List[int]:
+        """
+        Remove students whose id ∈ ids.  
+        Returns the list of actually deleted ids.
+        """
+        deleted: list[int] = []
+        id_set = set(ids)
+        with _LOCK:
+            # reconstruimos la lista sin los eliminados
+            remaining = []
+            for s in self._students:
+                if s["id"] in id_set:
+                    deleted.append(s["id"])
+                    self._names_set.discard(s["full_name"])
+                else:
+                    remaining.append(s)
+            if deleted:               # persist only if something changed
+                self._students = remaining
+                self._save_to_disk()
+        return deleted
 
 # Singleton instance
 student_data_service = StudentDataService()

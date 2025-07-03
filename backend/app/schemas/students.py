@@ -9,9 +9,14 @@ class Student(BaseModel):
 
 class StudentCreate(BaseModel):
     full_name: str
+    ciclos: list[str] = []    
+    modulos: list[str] = []  
 
 class StudentRecord(BaseModel):
     id: int
     full_name: str
     ciclos: list[str]
     modulos: list[str]
+
+class StudentDelete(BaseModel):
+    id: int

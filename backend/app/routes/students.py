@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from typing import List, Dict
 from app.services.pdf_parser import parse_students_from_pdf
-from app.schemas.students import Student, StudentRecord, StudentCreate
+from app.schemas.students import Student, StudentRecord, StudentCreate, StudentDelete
 from app.services.student_service     import student_data_service
 
 router = APIRouter()
@@ -42,3 +42,12 @@ async def list_students():
      - modulos
     """
     return student_data_service.list_students()
+
+
+@router.post("/students/delete", response_model=List[int], summary="Delete selected students")
+async def delete_students(payload: Dict[str, List[StudentDelete]]):
+    ids = [s.id for s in payload["students"]]
+    deleted = student_data_service.delete_students(ids)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="No students were deleted.")
+    return deleted
